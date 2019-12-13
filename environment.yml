@@ -1,0 +1,12 @@
+name: gplearn-vs-sklearn
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - graphviz
+  - matplotlib
+  - pandas
+  - python=3.7
+  - scikit-learn=0.21
+  - seaborn
+  - tabulate
