@@ -1,4 +1,4 @@
-name: gplearn-vs-sklearn
+name: gp-sym-regr-bio
 channels:
   - conda-forge
   - bioconda
