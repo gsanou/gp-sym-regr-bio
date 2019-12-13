@@ -3,10 +3,10 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - graphviz
   - matplotlib
   - pandas
   - python=3.7
+  - python-graphviz
   - scikit-learn=0.21
   - seaborn
   - tabulate
