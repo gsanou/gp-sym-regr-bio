@@ -11,6 +11,7 @@ from pprint import pprint
 from shutil import rmtree
 from tempfile import mkdtemp
 
+import graphviz
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -349,16 +350,14 @@ def run_model_selection():
                 else:
                     print('Features:')
                     print(tabulate(selected_feature_meta, headers='keys'))
+                graphviz.Source(
+                    search.best_estimator_.steps[-1][1]._program
+                    .export_graphviz()).render('results/program_{}.gv'
+                                               .format(split_idx + 1))
             split_results.append({
                 'feature_idxs': feature_idxs,
                 'feature_weights': feature_weights,
                 'scores': split_scores})
-
-            import graphviz
-            graph = graphviz.Source(search.best_estimator_.steps[-1][1]
-                                    ._program.export_graphviz())
-            graph.render('test.gv')
-
             if args.pipe_memory:
                 memory.clear(warn=False)
         scores = {'cv': {}, 'te': {}}
