@@ -1,0 +1,562 @@
+$ ./select_model.py \
+> --train-data data/tcga_brca_gex_data.csv \
+> --train-meta data/tcga_brca_gex_meta.csv \
+> --pipe-steps ShiftedLog2Transformer VarianceThreshold SelectKBest-ANOVAFScorer StandardScaler SVC \
+> --slr-skb-k-min 1 \
+> --slr-skb-k-max 100 \
+> --slr-skb-k-step 2 \
+> --clf-svm-kern linear \
+> --clf-svm-c-min 1e-7 \
+> --clf-svm-c-max 1e3 \
+> --test-folds 5 \
+> --cv-folds 5 \
+> --parallel-backend multiprocessing \
+> --n-jobs -2 \
+> --pipe-memory
+GridSearchCV:
+{'cv': StratifiedKFold(n_splits=5, random_state=777, shuffle=True),
+ 'error_score': 0,
+ 'estimator': {'memory': Memory(location=/tmp/tmplpo_ov3c/joblib),
+               'steps': [('trf0',
+                          FunctionTransformer(accept_sparse=False, check_inverse=False,
+                    func=<function shifted_log2 at 0x7f06eef3e730>,
+                    inv_kw_args=None, inverse_func=None, kw_args=None,
+                    pass_y='deprecated', validate=True)),
+                         ('slr1', VarianceThreshold(threshold=0.0)),
+                         ('slr2',
+                          SelectKBest(k=10, score_func=<function f_classif at 0x7f06ef52f840>)),
+                         ('trf3',
+                          StandardScaler(copy=True, with_mean=True, with_std=True)),
+                         ('clf4',
+                          SVC(C=1.0, cache_size=2000, class_weight='balanced', coef0=0.0,
+    decision_function_shape='ovr', degree=3, gamma='scale', kernel='linear',
+    max_iter=-1, probability=False, random_state=777, shrinking=True, tol=0.001,
+    verbose=False))],
+               'verbose': False},
+ 'iid': False,
+ 'n_jobs': -2,
+ 'param_grid': [{'clf4__C': array([1.e-07, 1.e-06, 1.e-05, 1.e-04, 1.e-03, 1.e-02, 1.e-01, 1.e+00,
+       1.e+01, 1.e+02, 1.e+03]),
+                 'slr2__k': [1,
+                             2,
+                             4,
+                             6,
+                             8,
+                             10,
+                             12,
+                             14,
+                             16,
+                             18,
+                             20,
+                             22,
+                             24,
+                             26,
+                             28,
+                             30,
+                             32,
+                             34,
+                             36,
+                             38,
+                             40,
+                             42,
+                             44,
+                             46,
+                             48,
+                             50,
+                             52,
+                             54,
+                             56,
+                             58,
+                             60,
+                             62,
+                             64,
+                             66,
+                             68,
+                             70,
+                             72,
+                             74,
+                             76,
+                             78,
+                             80,
+                             82,
+                             84,
+                             86,
+                             88,
+                             90,
+                             92,
+                             94,
+                             96,
+                             98,
+                             100]}],
+ 'pre_dispatch': '2*n_jobs',
+ 'refit': 'roc_auc',
+ 'return_train_score': False,
+ 'scoring': ['roc_auc', 'balanced_accuracy', 'average_precision'],
+ 'verbose': 1}
+Dataset: tcga_brca_gex_data (974, 60483)
+Fitting 5 folds for each of 561 candidates, totalling 2805 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   27.2s
+[Parallel(n_jobs=-2)]: Done 170 tasks      | elapsed:  2.1min
+[Parallel(n_jobs=-2)]: Done 420 tasks      | elapsed:  4.2min
+[Parallel(n_jobs=-2)]: Done 770 tasks      | elapsed:  6.4min
+[Parallel(n_jobs=-2)]: Done 1220 tasks      | elapsed:  9.4min
+[Parallel(n_jobs=-2)]: Done 1770 tasks      | elapsed: 13.0min
+[Parallel(n_jobs=-2)]: Done 2420 tasks      | elapsed: 17.2min
+[Parallel(n_jobs=-2)]: Done 2805 out of 2805 | elapsed: 23.6min finished
+Dataset: tcga_brca_gex_data  Split: 1  ROC AUC (CV / Test): 0.9456 / 0.9371  BCR (CV / Test): 0.8888 / 0.8598  AVG PRE (CV / Test): 0.9831 / 0.9787  PR AUC Test: 0.9786  Params: {'clf4__C': 0.01, 'slr2__k': 72} 
+Feature Ranking:
+                    Symbol           Weight
+------------------  ---------  ------------
+ENSG00000039068.17  CDH1       3.727045e-01
+ENSG00000159388.5   BTG2       2.324395e-02
+ENSG00000269113.3   TRABD2B    2.142978e-02
+ENSG00000280239.1              1.944403e-02
+ENSG00000136546.12  SCN7A      1.638916e-02
+ENSG00000199161.1   MIR126     1.625021e-02
+ENSG00000115233.10  PSMD14     1.498880e-02
+ENSG00000164403.13  SHROOM1    1.361169e-02
+ENSG00000198944.5   SOWAHA     1.215072e-02
+ENSG00000132622.9   HSPA12B    9.946925e-03
+ENSG00000129467.12  ADCY4      9.016894e-03
+ENSG00000273729.1              8.646532e-03
+ENSG00000162367.10  TAL1       7.876749e-03
+ENSG00000111077.16  TNS2       7.563005e-03
+ENSG00000119688.19  ABCD4      7.434758e-03
+ENSG00000168497.4   CAVIN2     7.367735e-03
+ENSG00000228401.4   HSPC324    6.977050e-03
+ENSG00000163239.11  TDRD10     6.159144e-03
+ENSG00000099622.12  CIRBP      6.025263e-03
+ENSG00000197245.4   FAM110D    5.460005e-03
+ENSG00000161835.9   GRASP      5.026141e-03
+ENSG00000189409.11  MMP23B     4.127491e-03
+ENSG00000127528.5   KLF2       3.975182e-03
+ENSG00000154330.11  PGM5       3.899814e-03
+ENSG00000079337.14  RAPGEF3    3.166944e-03
+ENSG00000165424.6   ZCCHC24    3.155930e-03
+ENSG00000186994.10  KANK3      2.774726e-03
+ENSG00000162383.10  SLC1A7     2.712090e-03
+ENSG00000105227.13  PRX        2.700232e-03
+ENSG00000280339.1              2.613991e-03
+ENSG00000276409.3   CCL14      2.543237e-03
+ENSG00000214548.13  MEG3       2.401117e-03
+ENSG00000130307.10  USHBP1     2.384294e-03
+ENSG00000187800.12  PEAR1      2.296526e-03
+ENSG00000180902.15  D2HGDH     2.273774e-03
+ENSG00000126218.10  F10        2.184653e-03
+ENSG00000135424.14  ITGA7      2.078490e-03
+ENSG00000262115.1              2.045558e-03
+ENSG00000149451.16  ADAM33     1.917927e-03
+ENSG00000126895.12  AVPR2      1.822194e-03
+ENSG00000277494.1   GPIHBP1    1.582490e-03
+ENSG00000137070.16  IL11RA     1.478148e-03
+ENSG00000130304.15  SLC27A1    1.405795e-03
+ENSG00000165810.15  BTNL9      1.251514e-03
+ENSG00000136059.13  VILL       1.222971e-03
+ENSG00000184113.9   CLDN5      9.055789e-04
+ENSG00000267206.4   LCN6       7.961022e-04
+ENSG00000144504.14  ANKMY1     7.923123e-04
+ENSG00000168874.11  ATOH8      7.880084e-04
+ENSG00000189129.12  PLAC9      7.736997e-04
+ENSG00000154263.16  ABCA10     7.427264e-04
+ENSG00000105373.17  NOP53      7.327785e-04
+ENSG00000164849.8   GPR146     7.203150e-04
+ENSG00000275152.3   CCL16      5.163172e-04
+ENSG00000177133.9   LINC00982  4.982784e-04
+ENSG00000267281.2              3.041157e-04
+ENSG00000164736.5   SOX17      2.721922e-04
+ENSG00000090006.16  LTBP4      1.179575e-04
+ENSG00000257270.1              1.010632e-04
+ENSG00000241644.2   INMT       6.449950e-05
+ENSG00000213088.8   ACKR1      6.150437e-05
+ENSG00000100307.11  CBX7       3.635943e-05
+ENSG00000100650.14  SRSF5      3.567023e-05
+ENSG00000166482.10  MFAP4      3.416789e-05
+ENSG00000112936.17  C7         2.926718e-05
+ENSG00000269936.3   MIR145     2.064244e-05
+ENSG00000241404.5   EGFL8      1.189569e-05
+ENSG00000266964.4   FXYD1      6.594081e-06
+ENSG00000053702.13  NRIP2      1.788462e-06
+ENSG00000177363.4   LRRN4CL    1.569852e-06
+ENSG00000167874.6   TMEM88     5.022200e-07
+ENSG00000225670.4   CADM3-AS1  2.781881e-07
+Fitting 5 folds for each of 561 candidates, totalling 2805 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   27.0s
+[Parallel(n_jobs=-2)]: Done 170 tasks      | elapsed:  2.1min
+[Parallel(n_jobs=-2)]: Done 420 tasks      | elapsed:  4.1min
+[Parallel(n_jobs=-2)]: Done 770 tasks      | elapsed:  6.4min
+[Parallel(n_jobs=-2)]: Done 1220 tasks      | elapsed:  9.4min
+[Parallel(n_jobs=-2)]: Done 1770 tasks      | elapsed: 13.0min
+[Parallel(n_jobs=-2)]: Done 2420 tasks      | elapsed: 17.3min
+[Parallel(n_jobs=-2)]: Done 2805 out of 2805 | elapsed: 24.1min finished
+Dataset: tcga_brca_gex_data  Split: 2  ROC AUC (CV / Test): 0.9411 / 0.9560  BCR (CV / Test): 0.8842 / 0.9016  AVG PRE (CV / Test): 0.9821 / 0.9865  PR AUC Test: 0.9864  Params: {'clf4__C': 0.01, 'slr2__k': 90} 
+Feature Ranking:
+                    Symbol           Weight
+------------------  ---------  ------------
+ENSG00000039068.17  CDH1       4.069775e-01
+ENSG00000269113.3   TRABD2B    3.219905e-02
+ENSG00000225892.3              2.837499e-02
+ENSG00000272161.1              2.234063e-02
+ENSG00000280239.1              2.145700e-02
+ENSG00000115233.10  PSMD14     1.627835e-02
+ENSG00000162383.10  SLC1A7     1.610285e-02
+ENSG00000214787.7   MS4A4E     1.434954e-02
+ENSG00000111077.16  TNS2       1.339935e-02
+ENSG00000159388.5   BTG2       1.285832e-02
+ENSG00000177374.11  HIC1       1.253867e-02
+ENSG00000228401.4   HSPC324    1.220594e-02
+ENSG00000169291.8   SHE        1.064392e-02
+ENSG00000167874.6   TMEM88     1.042277e-02
+ENSG00000231246.1              9.407363e-03
+ENSG00000167178.14  ISLR2      9.186208e-03
+ENSG00000241644.2   INMT       8.669579e-03
+ENSG00000127528.5   KLF2       8.229228e-03
+ENSG00000129467.12  ADCY4      8.108442e-03
+ENSG00000187942.10  LDLRAD2    7.805491e-03
+ENSG00000199161.1   MIR126     7.316408e-03
+ENSG00000161835.9   GRASP      7.135736e-03
+ENSG00000136546.12  SCN7A      7.110480e-03
+ENSG00000154330.11  PGM5       6.783820e-03
+ENSG00000101331.14  CCM2L      6.698826e-03
+ENSG00000163239.11  TDRD10     6.533855e-03
+ENSG00000147113.15  CXorf36    6.165601e-03
+ENSG00000145708.9   CRHBP      6.018907e-03
+ENSG00000225398.2   PGM5P4     5.423360e-03
+ENSG00000177133.9   LINC00982  4.949359e-03
+ENSG00000079337.14  RAPGEF3    4.725545e-03
+ENSG00000164403.13  SHROOM1    4.622845e-03
+ENSG00000100307.11  CBX7       4.451401e-03
+ENSG00000162367.10  TAL1       4.235814e-03
+ENSG00000198844.9   ARHGEF15   3.636360e-03
+ENSG00000132622.9   HSPA12B    3.548000e-03
+ENSG00000130307.10  USHBP1     3.129153e-03
+ENSG00000273729.1              3.108679e-03
+ENSG00000126895.12  AVPR2      2.777450e-03
+ENSG00000164736.5   SOX17      2.669346e-03
+ENSG00000165810.15  BTNL9      2.654242e-03
+ENSG00000267206.4   LCN6       2.540981e-03
+ENSG00000153902.12  LGI4       2.490737e-03
+ENSG00000275152.3   CCL16      2.320922e-03
+ENSG00000186994.10  KANK3      2.243142e-03
+ENSG00000187800.12  PEAR1      2.178888e-03
+ENSG00000269936.3   MIR145     2.097020e-03
+ENSG00000213088.8   ACKR1      2.033442e-03
+ENSG00000105227.13  PRX        1.952130e-03
+ENSG00000135424.14  ITGA7      1.704695e-03
+ENSG00000213316.8   LTC4S      1.596916e-03
+ENSG00000245812.2   LINC02202  1.582816e-03
+ENSG00000074660.14  SCARF1     1.569303e-03
+ENSG00000180902.15  D2HGDH     1.466294e-03
+ENSG00000214548.13  MEG3       1.344658e-03
+ENSG00000130304.15  SLC27A1    1.270169e-03
+ENSG00000184113.9   CLDN5      1.241763e-03
+ENSG00000168497.4   CAVIN2     1.188225e-03
+ENSG00000117245.11  KIF17      1.085521e-03
+ENSG00000090006.16  LTBP4      1.050682e-03
+ENSG00000225670.4   CADM3-AS1  1.025416e-03
+ENSG00000106404.12  CLDN15     9.456459e-04
+ENSG00000262115.1              8.356716e-04
+ENSG00000266964.4   FXYD1      8.288268e-04
+ENSG00000267281.2              7.609764e-04
+ENSG00000204301.6   NOTCH4     5.903630e-04
+ENSG00000249751.3   ECSCR      4.874868e-04
+ENSG00000164849.8   GPR146     4.823634e-04
+ENSG00000136059.13  VILL       3.841923e-04
+ENSG00000053702.13  NRIP2      3.409408e-04
+ENSG00000276409.3   CCL14      3.026666e-04
+ENSG00000280339.1              3.006593e-04
+ENSG00000189129.12  PLAC9      2.843932e-04
+ENSG00000126218.10  F10        2.586825e-04
+ENSG00000186642.14  PDE2A      2.423364e-04
+ENSG00000112936.17  C7         2.064797e-04
+ENSG00000177363.4   LRRN4CL    2.061738e-04
+ENSG00000154263.16  ABCA10     1.694875e-04
+ENSG00000139549.2   DHH        1.684372e-04
+ENSG00000149451.16  ADAM33     1.645177e-04
+ENSG00000165424.6   ZCCHC24    1.142443e-04
+ENSG00000197245.4   FAM110D    1.068707e-04
+ENSG00000151650.7   VENTX      8.839744e-05
+ENSG00000277494.1   GPIHBP1    7.717939e-05
+ENSG00000162267.11  ITIH3      2.053541e-05
+ENSG00000168874.11  ATOH8      1.464280e-05
+ENSG00000176435.6   CLEC14A    1.382355e-05
+ENSG00000105373.17  NOP53      1.200518e-05
+ENSG00000189409.11  MMP23B     1.090500e-06
+ENSG00000181234.9   TMEM132C   1.648963e-08
+Fitting 5 folds for each of 561 candidates, totalling 2805 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   26.6s
+[Parallel(n_jobs=-2)]: Done 170 tasks      | elapsed:  2.1min
+[Parallel(n_jobs=-2)]: Done 420 tasks      | elapsed:  4.1min
+[Parallel(n_jobs=-2)]: Done 770 tasks      | elapsed:  6.4min
+[Parallel(n_jobs=-2)]: Done 1220 tasks      | elapsed:  9.3min
+[Parallel(n_jobs=-2)]: Done 1770 tasks      | elapsed: 12.8min
+[Parallel(n_jobs=-2)]: Done 2420 tasks      | elapsed: 17.1min
+[Parallel(n_jobs=-2)]: Done 2805 out of 2805 | elapsed: 23.4min finished
+Dataset: tcga_brca_gex_data  Split: 3  ROC AUC (CV / Test): 0.9383 / 0.9555  BCR (CV / Test): 0.8631 / 0.8984  AVG PRE (CV / Test): 0.9816 / 0.9873  PR AUC Test: 0.9873  Params: {'clf4__C': 0.01, 'slr2__k': 64} 
+Feature Ranking:
+                    Symbol           Weight
+------------------  ---------  ------------
+ENSG00000039068.17  CDH1       3.732442e-01
+ENSG00000205959.3              3.100718e-02
+ENSG00000269113.3   TRABD2B    1.796202e-02
+ENSG00000272161.1              1.513018e-02
+ENSG00000198944.5   SOWAHA     1.506501e-02
+ENSG00000127528.5   KLF2       1.373901e-02
+ENSG00000168497.4   CAVIN2     1.290309e-02
+ENSG00000273729.1              1.278404e-02
+ENSG00000228401.4   HSPC324    1.097327e-02
+ENSG00000161835.9   GRASP      1.069125e-02
+ENSG00000159388.5   BTG2       8.474981e-03
+ENSG00000241644.2   INMT       7.171694e-03
+ENSG00000164403.13  SHROOM1    7.083629e-03
+ENSG00000012822.14  CALCOCO1   6.831164e-03
+ENSG00000079337.14  RAPGEF3    6.755659e-03
+ENSG00000115233.10  PSMD14     6.526705e-03
+ENSG00000132622.9   HSPA12B    5.605560e-03
+ENSG00000163093.10  BBS5       5.292411e-03
+ENSG00000126895.12  AVPR2      4.040525e-03
+ENSG00000129467.12  ADCY4      3.903048e-03
+ENSG00000187800.12  PEAR1      3.832928e-03
+ENSG00000166482.10  MFAP4      3.618859e-03
+ENSG00000199161.1   MIR126     3.586929e-03
+ENSG00000099622.12  CIRBP      3.532071e-03
+ENSG00000262115.1              3.374940e-03
+ENSG00000130307.10  USHBP1     3.044349e-03
+ENSG00000225670.4   CADM3-AS1  2.868980e-03
+ENSG00000277494.1   GPIHBP1    2.795266e-03
+ENSG00000165810.15  BTNL9      2.793260e-03
+ENSG00000167874.6   TMEM88     2.779174e-03
+ENSG00000111077.16  TNS2       2.361120e-03
+ENSG00000090006.16  LTBP4      2.077983e-03
+ENSG00000269936.3   MIR145     1.917689e-03
+ENSG00000186642.14  PDE2A      1.880063e-03
+ENSG00000241014.1   LOC653160  1.745659e-03
+ENSG00000275152.3   CCL16      1.737881e-03
+ENSG00000162367.10  TAL1       1.710455e-03
+ENSG00000189409.11  MMP23B     1.572103e-03
+ENSG00000003756.15  RBM5       1.237216e-03
+ENSG00000204403.8   CASP12     1.148139e-03
+ENSG00000135424.14  ITGA7      1.074012e-03
+ENSG00000177363.4   LRRN4CL    7.802380e-04
+ENSG00000213316.8   LTC4S      7.614435e-04
+ENSG00000112936.17  C7         7.511585e-04
+ENSG00000276409.3   CCL14      6.885020e-04
+ENSG00000267206.4   LCN6       5.810377e-04
+ENSG00000130304.15  SLC27A1    5.494283e-04
+ENSG00000136059.13  VILL       4.204181e-04
+ENSG00000189129.12  PLAC9      3.246664e-04
+ENSG00000164849.8   GPR146     3.222723e-04
+ENSG00000267281.2              3.135359e-04
+ENSG00000151650.7   VENTX      2.569127e-04
+ENSG00000184113.9   CLDN5      2.423368e-04
+ENSG00000162383.10  SLC1A7     1.924057e-04
+ENSG00000100307.11  CBX7       1.843404e-04
+ENSG00000164736.5   SOX17      1.706108e-04
+ENSG00000186994.10  KANK3      1.249269e-04
+ENSG00000180902.15  D2HGDH     6.766671e-05
+ENSG00000154263.16  ABCA10     4.146947e-05
+ENSG00000213088.8   ACKR1      3.373867e-05
+ENSG00000177133.9   LINC00982  3.363205e-05
+ENSG00000149451.16  ADAM33     2.886729e-05
+ENSG00000053702.13  NRIP2      1.908622e-05
+ENSG00000126218.10  F10        5.429537e-08
+Fitting 5 folds for each of 561 candidates, totalling 2805 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   26.6s
+[Parallel(n_jobs=-2)]: Done 170 tasks      | elapsed:  2.2min
+[Parallel(n_jobs=-2)]: Done 420 tasks      | elapsed:  4.2min
+[Parallel(n_jobs=-2)]: Done 770 tasks      | elapsed:  6.5min
+[Parallel(n_jobs=-2)]: Done 1220 tasks      | elapsed:  9.4min
+[Parallel(n_jobs=-2)]: Done 1770 tasks      | elapsed: 13.0min
+[Parallel(n_jobs=-2)]: Done 2420 tasks      | elapsed: 17.3min
+[Parallel(n_jobs=-2)]: Done 2805 out of 2805 | elapsed: 23.9min finished
+Dataset: tcga_brca_gex_data  Split: 4  ROC AUC (CV / Test): 0.9506 / 0.9127  BCR (CV / Test): 0.8814 / 0.8670  AVG PRE (CV / Test): 0.9858 / 0.9686  PR AUC Test: 0.9685  Params: {'clf4__C': 0.1, 'slr2__k': 12} 
+Feature Ranking:
+                    Symbol          Weight
+------------------  --------  ------------
+ENSG00000039068.17  CDH1      9.948531e-01
+ENSG00000079337.14  RAPGEF3   1.597527e-01
+ENSG00000126895.12  AVPR2     1.381237e-01
+ENSG00000189129.12  PLAC9     4.897264e-02
+ENSG00000129467.12  ADCY4     2.450230e-02
+ENSG00000149451.16  ADAM33    2.300315e-02
+ENSG00000267281.2             2.241058e-02
+ENSG00000130307.10  USHBP1    1.553454e-02
+ENSG00000090006.16  LTBP4     6.187232e-03
+ENSG00000126218.10  F10       3.350026e-04
+ENSG00000186994.10  KANK3     2.194583e-04
+ENSG00000277494.1   GPIHBP1   1.216313e-04
+Fitting 5 folds for each of 561 candidates, totalling 2805 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   27.1s
+[Parallel(n_jobs=-2)]: Done 170 tasks      | elapsed:  2.1min
+[Parallel(n_jobs=-2)]: Done 420 tasks      | elapsed:  4.2min
+[Parallel(n_jobs=-2)]: Done 770 tasks      | elapsed:  6.5min
+[Parallel(n_jobs=-2)]: Done 1220 tasks      | elapsed:  9.4min
+[Parallel(n_jobs=-2)]: Done 1770 tasks      | elapsed: 13.0min
+[Parallel(n_jobs=-2)]: Done 2420 tasks      | elapsed: 17.4min
+[Parallel(n_jobs=-2)]: Done 2805 out of 2805 | elapsed: 23.1min finished
+Dataset: tcga_brca_gex_data  Split: 5  ROC AUC (CV / Test): 0.9425 / 0.9477  BCR (CV / Test): 0.8745 / 0.8601  AVG PRE (CV / Test): 0.9820 / 0.9861  PR AUC Test: 0.9861  Params: {'clf4__C': 0.01, 'slr2__k': 48} 
+Feature Ranking:
+                    Symbol              Weight
+------------------  ------------  ------------
+ENSG00000039068.17  CDH1          4.309803e-01
+ENSG00000224032.5   EPB41L4A-AS1  3.918620e-02
+ENSG00000164403.13  SHROOM1       3.726801e-02
+ENSG00000154330.11  PGM5          2.153136e-02
+ENSG00000136546.12  SCN7A         1.789195e-02
+ENSG00000269113.3   TRABD2B       1.757107e-02
+ENSG00000127528.5   KLF2          1.495737e-02
+ENSG00000079337.14  RAPGEF3       1.240629e-02
+ENSG00000099622.12  CIRBP         1.107515e-02
+ENSG00000159388.5   BTG2          1.009295e-02
+ENSG00000126895.12  AVPR2         9.920720e-03
+ENSG00000161835.9   GRASP         9.906265e-03
+ENSG00000189129.12  PLAC9         8.244102e-03
+ENSG00000267281.2                 7.789882e-03
+ENSG00000115233.10  PSMD14        7.621614e-03
+ENSG00000167178.14  ISLR2         6.541595e-03
+ENSG00000186994.10  KANK3         6.024843e-03
+ENSG00000129467.12  ADCY4         5.067449e-03
+ENSG00000187800.12  PEAR1         4.820147e-03
+ENSG00000275152.3   CCL16         4.749197e-03
+ENSG00000189409.11  MMP23B        2.115535e-03
+ENSG00000126218.10  F10           2.106803e-03
+ENSG00000276409.3   CCL14         1.992026e-03
+ENSG00000130304.15  SLC27A1       1.848306e-03
+ENSG00000184113.9   CLDN5         1.843658e-03
+ENSG00000269936.3   MIR145        1.604706e-03
+ENSG00000225670.4   CADM3-AS1     1.447716e-03
+ENSG00000154263.16  ABCA10        1.357319e-03
+ENSG00000266964.4   FXYD1         1.176270e-03
+ENSG00000213088.8   ACKR1         1.140196e-03
+ENSG00000149451.16  ADAM33        1.094428e-03
+ENSG00000164736.5   SOX17         1.028970e-03
+ENSG00000132622.9   HSPA12B       1.025501e-03
+ENSG00000111077.16  TNS2          9.285759e-04
+ENSG00000168497.4   CAVIN2        4.824278e-04
+ENSG00000165424.6   ZCCHC24       4.735769e-04
+ENSG00000166482.10  MFAP4         4.511442e-04
+ENSG00000267206.4   LCN6          4.291096e-04
+ENSG00000053702.13  NRIP2         4.090036e-04
+ENSG00000177363.4   LRRN4CL       1.451238e-04
+ENSG00000100307.11  CBX7          8.810307e-05
+ENSG00000090006.16  LTBP4         3.668323e-05
+ENSG00000162383.10  SLC1A7        1.981210e-05
+ENSG00000241644.2   INMT          1.550448e-05
+ENSG00000277494.1   GPIHBP1       1.206836e-05
+ENSG00000167874.6   TMEM88        1.015544e-05
+ENSG00000228401.4   HSPC324       3.632409e-06
+ENSG00000130307.10  USHBP1        4.136577e-07
+Dataset: tcga_brca_gex_data (974, 60483)  Mean ROC AUC (CV / Test): 0.9436 / 0.9418  Mean BCR (CV / Test): 0.8784 / 0.8774  Mean AVG PRE (CV / Test): 0.9829 / 0.9815  Mean PR AUC Test: 0.9814  Mean Features: 57
+Overall Feature Ranking:
+                    Symbol          Mean Weight
+------------------  ------------  -------------
+ENSG00000039068.17  CDH1           5.157519e-01
+ENSG00000079337.14  RAPGEF3        3.736144e-02
+ENSG00000126895.12  AVPR2          3.133692e-02
+ENSG00000269113.3   TRABD2B        1.783238e-02
+ENSG00000164403.13  SHROOM1        1.251723e-02
+ENSG00000189129.12  PLAC9          1.171990e-02
+ENSG00000159388.5   BTG2           1.093404e-02
+ENSG00000129467.12  ADCY4          1.011963e-02
+ENSG00000115233.10  PSMD14         9.083094e-03
+ENSG00000136546.12  SCN7A          8.278316e-03
+ENSG00000280239.1                  8.180208e-03
+ENSG00000127528.5   KLF2           8.180158e-03
+ENSG00000224032.5   EPB41L4A-AS1   7.837240e-03
+ENSG00000272161.1                  7.494162e-03
+ENSG00000161835.9   GRASP          6.551879e-03
+ENSG00000154330.11  PGM5           6.442998e-03
+ENSG00000267281.2                  6.315819e-03
+ENSG00000205959.3                  6.201436e-03
+ENSG00000228401.4   HSPC324        6.031978e-03
+ENSG00000225892.3                  5.674998e-03
+ENSG00000198944.5   SOWAHA         5.443147e-03
+ENSG00000199161.1   MIR126         5.430709e-03
+ENSG00000149451.16  ADAM33         5.241778e-03
+ENSG00000273729.1                  4.907850e-03
+ENSG00000111077.16  TNS2           4.850410e-03
+ENSG00000130307.10  USHBP1         4.818550e-03
+ENSG00000168497.4   CAVIN2         4.388296e-03
+ENSG00000099622.12  CIRBP          4.126496e-03
+ENSG00000132622.9   HSPA12B        4.025197e-03
+ENSG00000162383.10  SLC1A7         3.805432e-03
+ENSG00000241644.2   INMT           3.184255e-03
+ENSG00000167178.14  ISLR2          3.145561e-03
+ENSG00000214787.7   MS4A4E         2.869908e-03
+ENSG00000162367.10  TAL1           2.764604e-03
+ENSG00000167874.6   TMEM88         2.642520e-03
+ENSG00000187800.12  PEAR1          2.625698e-03
+ENSG00000163239.11  TDRD10         2.538600e-03
+ENSG00000177374.11  HIC1           2.507734e-03
+ENSG00000186994.10  KANK3          2.277419e-03
+ENSG00000169291.8   SHE            2.128784e-03
+ENSG00000090006.16  LTBP4          1.894108e-03
+ENSG00000231246.1                  1.881473e-03
+ENSG00000275152.3   CCL16          1.864863e-03
+ENSG00000189409.11  MMP23B         1.563244e-03
+ENSG00000187942.10  LDLRAD2        1.561098e-03
+ENSG00000119688.19  ABCD4          1.486952e-03
+ENSG00000012822.14  CALCOCO1       1.366233e-03
+ENSG00000165810.15  BTNL9          1.339803e-03
+ENSG00000101331.14  CCM2L          1.339765e-03
+ENSG00000262115.1                  1.251234e-03
+ENSG00000147113.15  CXorf36        1.233120e-03
+ENSG00000145708.9   CRHBP          1.203781e-03
+ENSG00000269936.3   MIR145         1.128011e-03
+ENSG00000197245.4   FAM110D        1.113375e-03
+ENSG00000276409.3   CCL14          1.105286e-03
+ENSG00000177133.9   LINC00982      1.096254e-03
+ENSG00000225398.2   PGM5P4         1.084672e-03
+ENSG00000225670.4   CADM3-AS1      1.068478e-03
+ENSG00000163093.10  BBS5           1.058482e-03
+ENSG00000130304.15  SLC27A1        1.014740e-03
+ENSG00000126218.10  F10            9.770392e-04
+ENSG00000135424.14  ITGA7          9.714393e-04
+ENSG00000100307.11  CBX7           9.520408e-04
+ENSG00000105227.13  PRX            9.304723e-04
+ENSG00000277494.1   GPIHBP1        9.177271e-04
+ENSG00000267206.4   LCN6           8.694460e-04
+ENSG00000184113.9   CLDN5          8.466672e-04
+ENSG00000164736.5   SOX17          8.282237e-04
+ENSG00000166482.10  MFAP4          8.208343e-04
+ENSG00000180902.15  D2HGDH         7.615469e-04
+ENSG00000214548.13  MEG3           7.491550e-04
+ENSG00000165424.6   ZCCHC24        7.487502e-04
+ENSG00000198844.9   ARHGEF15       7.272721e-04
+ENSG00000213088.8   ACKR1          6.537762e-04
+ENSG00000280339.1                  5.829301e-04
+ENSG00000153902.12  LGI4           4.981473e-04
+ENSG00000213316.8   LTC4S          4.716719e-04
+ENSG00000154263.16  ABCA10         4.622005e-04
+ENSG00000186642.14  PDE2A          4.244799e-04
+ENSG00000136059.13  VILL           4.055162e-04
+ENSG00000266964.4   FXYD1          4.023382e-04
+ENSG00000241014.1   LOC653160      3.491317e-04
+ENSG00000245812.2   LINC02202      3.165633e-04
+ENSG00000074660.14  SCARF1         3.138606e-04
+ENSG00000164849.8   GPR146         3.049901e-04
+ENSG00000137070.16  IL11RA         2.956295e-04
+ENSG00000003756.15  RBM5           2.474433e-04
+ENSG00000204403.8   CASP12         2.296279e-04
+ENSG00000177363.4   LRRN4CL        2.266211e-04
+ENSG00000117245.11  KIF17          2.171042e-04
+ENSG00000112936.17  C7             1.973811e-04
+ENSG00000106404.12  CLDN15         1.891292e-04
+ENSG00000168874.11  ATOH8          1.605302e-04
+ENSG00000144504.14  ANKMY1         1.584625e-04
+ENSG00000053702.13  NRIP2          1.541638e-04
+ENSG00000105373.17  NOP53          1.489567e-04
+ENSG00000204301.6   NOTCH4         1.180726e-04
+ENSG00000249751.3   ECSCR          9.749736e-05
+ENSG00000151650.7   VENTX          6.906202e-05
+ENSG00000139549.2   DHH            3.368744e-05
+ENSG00000257270.1                  2.021264e-05
+ENSG00000100650.14  SRSF5          7.134045e-06
+ENSG00000162267.11  ITIH3          4.107083e-06
+ENSG00000176435.6   CLEC14A        2.764710e-06
+ENSG00000241404.5   EGFL8          2.379137e-06
+ENSG00000181234.9   TMEM132C       3.297926e-09

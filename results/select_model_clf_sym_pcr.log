@@ -1,0 +1,88 @@
+$ ./select_model.py \
+> --train-data data/tcga_brca_gex_data.csv \
+> --train-meta data/tcga_brca_gex_meta.csv \
+> --pipe-steps ShiftedLog2Transformer VarianceThreshold SelectKBest-ANOVAFScorer StandardScaler SymbolicClassifier \
+> --slr-skb-k 100 \
+> --clf-sym-fs add,sub \
+> --clf-sym-pcr 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 \
+> --test-folds 5 \
+> --cv-folds 5 \
+> --parallel-backend multiprocessing \
+> --n-jobs -2 \
+> --pipe-memory
+GridSearchCV:
+{'cv': StratifiedKFold(n_splits=5, random_state=777, shuffle=True),
+ 'error_score': 0,
+ 'estimator': {'memory': Memory(location=/tmp/tmpiep57mgf/joblib),
+               'steps': [('trf0',
+                          FunctionTransformer(accept_sparse=False, check_inverse=False,
+                    func=<function shifted_log2 at 0x7fb365f1f730>,
+                    inv_kw_args=None, inverse_func=None, kw_args=None,
+                    pass_y='deprecated', validate=True)),
+                         ('slr1', VarianceThreshold(threshold=0.0)),
+                         ('slr2',
+                          SelectKBest(k=100, score_func=<function f_classif at 0x7fb366510840>)),
+                         ('trf3',
+                          StandardScaler(copy=True, with_mean=True, with_std=True)),
+                         ('clf4',
+                          SymbolicClassifier(const_range=(-1.0, 1.0), feature_names=None,
+                   function_set=['add', 'sub'], generations=20,
+                   init_depth=(2, 6), init_method='half and half',
+                   low_memory=False, max_samples=1.0, metric='log loss',
+                   n_jobs=1, p_crossover=0.9, p_hoist_mutation=0.01,
+                   p_point_mutation=0.01, p_point_replace=0.05,
+                   p_subtree_mutation=0.01, parsimony_coefficient='auto',
+                   population_size=1000, random_state=777,
+                   stopping_criteria=0.01, tournament_size=20,
+                   transformer='sigmoid', verbose=0, warm_start=False))],
+               'verbose': False},
+ 'iid': False,
+ 'n_jobs': -2,
+ 'param_grid': [{'clf4__p_crossover': [0.0,
+                                       0.1,
+                                       0.2,
+                                       0.3,
+                                       0.4,
+                                       0.5,
+                                       0.6,
+                                       0.7,
+                                       0.8,
+                                       0.9]}],
+ 'pre_dispatch': '2*n_jobs',
+ 'refit': 'roc_auc',
+ 'return_train_score': False,
+ 'scoring': ['roc_auc', 'balanced_accuracy', 'average_precision'],
+ 'verbose': 1}
+Dataset: tcga_brca_gex_data (974, 60483)
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   51.0s
+[Parallel(n_jobs=-2)]: Done  50 out of  50 | elapsed:  1.4min finished
+Dataset: tcga_brca_gex_data  Split: 1  ROC AUC (CV / Test): 0.9399 / 0.9397  BCR (CV / Test): 0.8370 / 0.8555  AVG PRE (CV / Test): 0.9822 / 0.9828  PR AUC Test: 0.9827  Params: {'clf4__p_crossover': 0.7}  Program: add(sub(0.832, sub(X7, add(sub(0.832, X66), X3))), add(0.832, X3))
+
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   52.3s
+[Parallel(n_jobs=-2)]: Done  50 out of  50 | elapsed:  1.5min finished
+Dataset: tcga_brca_gex_data  Split: 2  ROC AUC (CV / Test): 0.8796 / 0.9426  BCR (CV / Test): 0.7749 / 0.8774  AVG PRE (CV / Test): 0.9620 / 0.9829  PR AUC Test: 0.9829  Params: {'clf4__p_crossover': 0.5}  Program: add(0.832, add(0.832, sub(add(0.832, add(add(0.832, add(0.832, sub(sub(X2, 0.832), 0.832))), sub(add(0.832, sub(X2, 0.832)), X47))), X91)))
+
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   50.9s
+[Parallel(n_jobs=-2)]: Done  50 out of  50 | elapsed:  1.4min finished
+Dataset: tcga_brca_gex_data  Split: 3  ROC AUC (CV / Test): 0.9163 / 0.9382  BCR (CV / Test): 0.8139 / 0.8681  AVG PRE (CV / Test): 0.9703 / 0.9726  PR AUC Test: 0.9723  Params: {'clf4__p_crossover': 0.9}  Program: sub(add(add(add(sub(add(sub(0.832, X66), add(add(X2, 0.832), add(0.832, add(sub(0.832, X37), sub(X2, X47))))), X66), add(X2, 0.832)), add(sub(0.832, X37), sub(X2, add(add(X2, 0.832), add(sub(0.832, X66), add(sub(X2, X47), sub(0.832, X37))))))), 0.832), X18)
+
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   51.3s
+[Parallel(n_jobs=-2)]: Done  50 out of  50 | elapsed:  1.5min finished
+Dataset: tcga_brca_gex_data  Split: 4  ROC AUC (CV / Test): 0.9392 / 0.9227  BCR (CV / Test): 0.8465 / 0.8708  AVG PRE (CV / Test): 0.9808 / 0.9690  PR AUC Test: 0.9687  Params: {'clf4__p_crossover': 0.5}  Program: add(add(X4, 0.832), sub(add(add(X66, sub(0.832, add(add(X66, sub(0.832, X66)), sub(add(X4, 0.832), X6)))), add(add(add(X4, 0.832), sub(0.832, X66)), sub(add(add(X4, 0.832), sub(sub(0.832, X36), add(X66, sub(0.832, X66)))), X89))), X6))
+
+Fitting 5 folds for each of 10 candidates, totalling 50 fits
+[Parallel(n_jobs=-2)]: Using backend MultiprocessingBackend with 15 concurrent workers.
+[Parallel(n_jobs=-2)]: Done  20 tasks      | elapsed:   52.6s
+[Parallel(n_jobs=-2)]: Done  50 out of  50 | elapsed:  1.5min finished
+Dataset: tcga_brca_gex_data  Split: 5  ROC AUC (CV / Test): 0.9388 / 0.9302  BCR (CV / Test): 0.8598 / 0.8023  AVG PRE (CV / Test): 0.9813 / 0.9807  PR AUC Test: 0.9806  Params: {'clf4__p_crossover': 0.7}  Program: add(add(X3, add(X3, add(0.832, add(X67, add(add(add(X3, 0.832), sub(0.832, X54)), sub(0.832, add(add(X3, 0.832), sub(0.832, X54)))))))), sub(0.832, X54))
+
+Dataset: tcga_brca_gex_data (974, 60483)  Mean ROC AUC (CV / Test): 0.9228 / 0.9347  Mean BCR (CV / Test): 0.8264 / 0.8548  Mean AVG PRE (CV / Test): 0.9753 / 0.9776  Mean PR AUC Test: 0.9774 
+
