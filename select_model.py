@@ -261,7 +261,7 @@ def run_model_selection():
             sample_meta = pd.read_csv(args.train_meta, index_col=0)
             X = np.array(data.T)
             y = pd.factorize(sample_meta['Class'])[0]
-            feature_meta = pd.read_csv('ensg_symbol_grch38p2_gtfv22.tsv',
+            feature_meta = pd.read_csv('data/ensg_symbol_grch38p2_gtfv22.tsv',
                                        keep_default_na=False, index_col=0,
                                        sep='\t')
         else:
@@ -347,8 +347,9 @@ def run_model_selection():
                         by='Weight', ascending=False), floatfmt='.6e',
                                    headers='keys'))
                 else:
-                    print('Features:')
-                    print(tabulate(selected_feature_meta, headers='keys'))
+                    # print('Features:')
+                    # print(tabulate(selected_feature_meta, headers='keys'))
+                    print()
             split_results.append({
                 'feature_idxs': feature_idxs,
                 'feature_weights': feature_weights,
@@ -420,8 +421,9 @@ def run_model_selection():
                     by='Mean Weight', ascending=False), floatfmt='.6e',
                                headers='keys'))
             else:
-                print('Overall Features:')
-                print(tabulate(selected_feature_meta, headers='keys'))
+                # print('Overall Features:')
+                # print(tabulate(selected_feature_meta, headers='keys'))
+                print()
         plot_param_cv_metrics(dataset_name, pipe_name, param_grid_dict,
                               param_cv_scores)
         # plot roc and pr curves
