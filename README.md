@@ -1,4 +1,4 @@
-# gplearn-vs-sklearn
+# gp-sym-regr-bio
 Evaluation of genetic programming symbolic regression vs standard supervised machine learning methods for prediction in biological data case studies.
 
 ## Installation
