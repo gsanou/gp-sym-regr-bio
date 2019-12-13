@@ -347,13 +347,18 @@ def run_model_selection():
                         by='Weight', ascending=False), floatfmt='.6e',
                                    headers='keys'))
                 else:
-                    # print('Features:')
-                    # print(tabulate(selected_feature_meta, headers='keys'))
-                    print()
+                    print('Features:')
+                    print(tabulate(selected_feature_meta, headers='keys'))
             split_results.append({
                 'feature_idxs': feature_idxs,
                 'feature_weights': feature_weights,
                 'scores': split_scores})
+
+            import graphviz
+            graph = graphviz.Source(search.best_estimator_.steps[-1][1]
+                                    ._program.export_graphviz())
+            graph.render('test.gv')
+
             if args.pipe_memory:
                 memory.clear(warn=False)
         scores = {'cv': {}, 'te': {}}
@@ -421,9 +426,8 @@ def run_model_selection():
                     by='Mean Weight', ascending=False), floatfmt='.6e',
                                headers='keys'))
             else:
-                # print('Overall Features:')
-                # print(tabulate(selected_feature_meta, headers='keys'))
-                print()
+                print('Overall Features:')
+                print(tabulate(selected_feature_meta, headers='keys'))
         plot_param_cv_metrics(dataset_name, pipe_name, param_grid_dict,
                               param_cv_scores)
         # plot roc and pr curves
